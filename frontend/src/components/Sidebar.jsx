@@ -1,6 +1,7 @@
 import React from "react";
 import {
   Box,
+  Drawer,
   List,
   ListItemButton,
   ListItemIcon,
@@ -18,9 +19,10 @@ import {
   Task,
   CalendarMonth,
   Settings,
-  Login,
 } from "@mui/icons-material";
 import { useLocation, useNavigate } from "react-router-dom";
+
+const drawerWidth = 240;
 
 const navItems = [
   { icon: <Dashboard />, label: "Dashboard", path: "/dashboard" },
@@ -31,83 +33,81 @@ const navItems = [
   { icon: <Task />, label: "Task", path: "/task" },
   { icon: <CalendarMonth />, label: "Calendar", path: "/calendar" },
   { icon: <Settings />, label: "Settings", path: "/settings" },
- 
 ];
 
-const Sidebar = () => {
+const Sidebar = ({ mobileOpen, onClose }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-  return (
-    <Box
-      sx={{
-        width: isMobile ? 70 : 240,
-        height: "100vh",
-        position: "fixed",
-        top: { xs: 88, sm: 65 },
-        left: 0,
-        bgcolor: "rgba(106,17,203,0.4)",
-        background: "linear-gradient(to bottom, rgba(106,17,203,0.4), rgba(37,117,252,0.4))",
-        backdropFilter: "blur(16px)",
-        WebkitBackdropFilter: "blur(16px)",
-        borderRight: "1px solid rgba(255, 255, 255, 0.1)",
-        zIndex: 1300,
-        overflowY: "auto",
-        px: 1,
-        pt: 2,
-        boxShadow: 4,
-        transition: "width 0.3s ease",
-      }}
-    >
+  const drawer = (
+    <Box sx={{ px: 1, pt: 10 }}>
       <List>
         {navItems.map((item) => {
           const isActive = location.pathname === item.path;
 
           return (
-            <Tooltip title={isMobile ? item.label : ""} placement="right" key={item.label}>
-              <ListItemButton
-                onClick={() => navigate(item.path)}
-                sx={{
-                  mb: 1,
-                  px: isMobile ? 1 : 2.5,
-                  borderRadius: "999px",
-                  backgroundColor: isActive ? "rgba(255,255,255,0.15)" : "transparent",
-                  color: "white",
-                  "&:hover": {
-                    backgroundColor: "rgba(255,255,255,0.25)",
-                    transform: "scale(1.04)",
-                  },
-                  transition: "all 0.3s",
-                  justifyContent: isMobile ? "center" : "flex-start",
+            <ListItemButton
+              key={item.label}
+              onClick={() => {
+                navigate(item.path);
+                if (isMobile) onClose(); // Auto-close on mobile
+              }}
+              sx={{
+                mb: 1,
+                px: 2,
+                py: 1,
+                borderRadius: "8px",
+                backgroundColor: isActive
+                  ? "rgba(255,255,255,0.15)"
+                  : "transparent",
+                color: "white",
+                "&:hover": {
+                  backgroundColor: "rgba(255,255,255,0.25)",
+                  transform: "scale(1.03)",
+                },
+                transition: "all 0.3s",
+              }}
+            >
+              <ListItemIcon sx={{ color: "white", minWidth: 36 }}>
+                {item.icon}
+              </ListItemIcon>
+              <ListItemText
+                primary={item.label}
+                primaryTypographyProps={{
+                  fontSize: 14,
+                  fontWeight: 500,
                 }}
-              >
-                <ListItemIcon
-                  sx={{
-                    color: "white",
-                    minWidth: 0,
-                    mr: isMobile ? 0 : 2,
-                    justifyContent: "center",
-                  }}
-                >
-                  {item.icon}
-                </ListItemIcon>
-
-                {!isMobile && (
-                  <ListItemText
-                    primary={item.label}
-                    primaryTypographyProps={{
-                      fontWeight: 600,
-                      fontSize: 14,
-                    }}
-                  />
-                )}
-              </ListItemButton>
-            </Tooltip>
+              />
+            </ListItemButton>
           );
         })}
       </List>
+    </Box>
+  );
+
+  return (
+    <Box component="nav">
+      <Drawer
+        variant={isMobile ? "temporary" : "permanent"}
+        open={isMobile ? mobileOpen : true}
+        onClose={onClose}
+        ModalProps={{ keepMounted: true }}
+        sx={{
+          "& .MuiDrawer-paper": {
+            width: drawerWidth,
+            background:
+              "linear-gradient(to bottom, rgba(106,17,203,0.4), rgba(37,117,252,0.4))",
+            color: "#fff",
+            boxSizing: "border-box",
+            backdropFilter: "blur(12px)",
+            WebkitBackdropFilter: "blur(12px)",
+          },
+        }}
+      >
+        {drawer}
+      </Drawer>
     </Box>
   );
 };

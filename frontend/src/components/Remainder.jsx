@@ -151,18 +151,18 @@ export default function Reminder() {
           </TextField>
 
           <FormControl fullWidth margin="dense">
-            <InputLabel id="delivery-methods-label">Send Via</InputLabel>
+            <InputLabel id="delivery-methods-label">Preferred Choice</InputLabel>
             <Select
               labelId="delivery-methods-label"
               multiple
               name="deliveryMethods"
               value={formData.deliveryMethods}
               onChange={handleChange}
-              input={<OutlinedInput label="Send Via" />}
+              input={<OutlinedInput label="Preferred Choice" />}
               renderValue={(selected) => selected.join(', ')}
             >
               {deliveryOptions.map((method) => (
-                <MenuItem key={method} value={method}>
+                <MenuItem key={method} value={method} >
                   <Checkbox checked={formData.deliveryMethods.includes(method)} />
                   <ListItemText primary={method} />
                 </MenuItem>

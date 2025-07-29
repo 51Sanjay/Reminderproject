@@ -157,7 +157,7 @@ const DashboardPage = () => {
               <React.Fragment key={r._id}>
                 <ListItem>
                   <ListItemText
-                    primary={`${r.title} - ${r.type || 'N/A'} - ${r.note || 'No note'}`}
+                    primary={`${r.title} - ${r.type || 'N/A'} - ${r.notes || 'No note'}`}
                     secondary={new Date(r.date).toLocaleString()}
                   />
                 </ListItem>

@@ -1,6 +1,6 @@
 // components/ReportPanel.jsx
 import axios from 'axios';
-import { Button } from '@mui/material';
+import { Box, Button ,Stack,Typography} from '@mui/material';
 
 export default function ReportPanel() {
   const exportCustomers = async (type) => {
@@ -26,10 +26,26 @@ export default function ReportPanel() {
   };
 
   return (
-    <div className="space-y-4">
-      <h2 className="text-xl font-semibold">Reminder Reports</h2>
-      <Button variant="contained" onClick={() => exportCustomers('excel')}>Export Excel</Button>
-      <Button variant="contained" color="secondary" onClick={() => exportCustomers('pdf')}>Export PDF</Button>
-    </div>
+    <>
+     <Box sx={{ p: 2 }}>
+      <Typography variant="h6" fontWeight="600" gutterBottom>
+        Reminder Reports
+      </Typography>
+
+      <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
+        <Button variant="contained" onClick={() => exportCustomers('excel')}>
+          Export Excel
+        </Button>
+
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={() => exportCustomers('pdf')}
+        >
+          Export PDF
+        </Button>
+      </Stack>
+    </Box>
+    </>
   );
 }
